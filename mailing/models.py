@@ -40,15 +40,15 @@ class Message(models.Model):
 class Dispatch(models.Model):
     """Рассылка"""
 
-    DAILY = 'daily'
-    WEEKLY = 'weekly'
-    MONTHLY = 'monthly'
+    DAILY = 'раз в день'
+    WEEKLY = 'раз в неделю'
+    MONTHLY = 'раз в месяц'
 
-    CREATED = 'created'
-    LAUNCHED = 'launched'
-    CANCELLED = 'cancelled'
-    COMPLETED = 'completed'
-    DELETED = 'deleted'
+    CREATED = 'создана'
+    LAUNCHED = 'запущена'
+    CANCELLED = 'отменена'
+    COMPLETED = 'завершена'
+    DELETED = 'удалена'
 
     PERIODICITY_CHOICES = [
         (DAILY, 'раз в день'),
