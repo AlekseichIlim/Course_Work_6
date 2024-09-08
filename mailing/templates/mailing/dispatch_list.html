@@ -1,0 +1,47 @@
+{% extends 'mailing/base.html' %}
+
+{% block content %}
+<main>
+
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Сервис рассылок</h1>
+
+                <p>
+                    <a class="btn btn-primary my-2" href="{% url 'mailing:dispatch_create' %}" >Создать рассылку</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="album py-5 bg-body-tertiary">
+        <div class="container">
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {% for dispatch in object_list %}
+                <div class="col-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">{{ dispatch.title }}</h4>
+                            <h8 class="my-0 font-weight-normal">Периодичность: {{ dispatch.periodicity }}</h8>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{ dispatch.message|slice:100 }}</p>
+                            <small class="text-body-secondary">{{ dispatch.status }}</small>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Посмотреть</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Редактировать</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Удалить</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
