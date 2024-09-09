@@ -20,8 +20,8 @@ class MessageAdmin(admin.ModelAdmin):
 @admin.register(Dispatch)
 class DispatchAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'status')
-    list_filter = ('title', 'datetime_start', 'periodicity', 'status')
-    search_fields = ('title', 'message', 'datetime_start')
+    list_filter = ('title', 'first_sent_date_time', 'periodicity', 'status')
+    search_fields = ('title', 'message', 'first_sent_date_time')
 
 
 @admin.register(Attempts)
