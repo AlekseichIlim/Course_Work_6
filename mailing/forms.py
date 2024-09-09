@@ -16,5 +16,5 @@ class StyleMixin:
 class DispatchForm(ModelForm):
     class Meta:
         model = Dispatch
-        fields = '__all__'
+        exclude = ('next_sent_date_time', )
 
