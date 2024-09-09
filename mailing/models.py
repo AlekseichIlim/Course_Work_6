@@ -58,14 +58,15 @@ class Dispatch(models.Model):
 
     STATUS_CHOICES = [
         (CREATED, 'создана'),
-        (LAUNCHED, 'отправлена'),
+        (LAUNCHED, 'запущена'),
         (CANCELLED, 'отменена'),
         (COMPLETED, 'завершена'),
-        (DELETED, 'удалена')
     ]
 
     title = models.CharField(max_length=100, verbose_name='заголовок', **NULLABLE)
-    datetime_start = models.DateTimeField(default=datetime.now, verbose_name='дата и время отправки')
+    first_sent_date_time = models.DateTimeField(default=None, verbose_name='дата и время первой отправки')
+    next_sent_date_time = models.DateTimeField(default=None, verbose_name='дата и время следующей отправки', **NULLABLE)
+    last_sent_date_time = models.DateTimeField(default=None, verbose_name='дата и время последней отправки', **NULLABLE)
     periodicity = models.CharField(max_length=20, choices=PERIODICITY_CHOICES, verbose_name='периодичность')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, verbose_name='статус')
     message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name='сообщение', related_name='dispatch')
@@ -77,7 +78,7 @@ class Dispatch(models.Model):
     class Meta:
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
-        ordering = ('title', 'datetime_start', 'status',)
+        ordering = ('title', 'first_sent_date_time', 'status',)
 
 
 class Attempts(models.Model):
