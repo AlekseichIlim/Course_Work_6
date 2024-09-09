@@ -18,4 +18,3 @@ class DispatchForm(ModelForm):
         model = Dispatch
         fields = '__all__'
 
-
