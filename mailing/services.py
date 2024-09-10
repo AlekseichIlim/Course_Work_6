@@ -7,42 +7,51 @@ from django.core.mail import send_mail
 from mailing.models import Dispatch, Attempts
 
 
-def send_mailing():
+def send_mailing(mailing, current_datetime):
+
+    try:
+        send_mail(subject=mailing.message.title_message,
+                  message=mailing.message.body_message,
+                  from_email=settings.EMAIL_HOST_USER,
+                  recipient_list=[client.email for client in mailing.clients.all()],
+                  fail_silently=False)
+
+        first_time = current_datetime
+        if mailing.periodicity == 'раз в день':
+            mailing.next_sent_date_time = first_time + timedelta(days=1)
+        elif mailing.periodicity == 'раз в неделю':
+            mailing.next_sent_date_time = first_time + timedelta(weeks=1)
+        else:
+            mailing.next_sent_date_time = first_time + timedelta(days=30)
+        Attempts.objects.create(datetime=current_datetime,
+                                status=True,
+                                dispatch=mailing,
+                                mail_response='Рассылка прошла успешно')
+    except smtplib.SMTPException as e:
+        Attempts.objects.create(datetime=current_datetime,
+                                status=False,
+                                dispatch=mailing,
+                                mail_response=str(e))
+
+
+def start_send_mailing():
     """Функция отправки рассылки"""
+
     zone = pytz.timezone(settings.TIME_ZONE)
     current_datetime = datetime.now(zone)
+    print(f'Текущее время: {current_datetime}')
     # создание объекта с применением фильтра
-    mailings = Dispatch.objects.filter(next_send_date_time__lte=current_datetime).filter(
-        status__in='LAUNCHED')
+    mailings = Dispatch.objects.filter(last_sent_date_time__gt=current_datetime)
 
     for mailing in mailings:
-        for client in mailing.clients.all():
-            try:
-                send_mail(subject=mailing.message.title_message,
-                          message=mailing.message.body_message,
-                          from_email=settings.EMAIL_HOST_USER,
-                          recipient_list=[client.email],
-                          fail_silently=False)
-
-                mailing.first_sent_date_time = current_datetime
-                if mailing.periodicity == 'DAILY':
-                    mailing.next_send_date_time += timedelta(days=1)
-                elif mailing.periodicity == 'WEEKLY':
-                    mailing.next_send_date_time += timedelta(weeks=1)
-                elif mailing.periodicity == 'MONTHLY':
-                    mailing.next_send_date_time += timedelta(days=30)
-                mailing.status = 'LAUNCHED'
-                if mailing.last_send_date_time:
-                    if mailing.next_send_date_time >= mailing.last_send_date_time:
-                        mailing.status = 'COMPLETED'
-                Attempts.objects.create(datetime=current_datetime,
-                                        status=True,
-                                        dispatch=mailing,
-                                        mail_response='Письмо получено')
-            except smtplib.SMTPException as e:
-                Attempts.objects.create(datetime=current_datetime,
-                                        status=False,
-                                        dispatch=mailing,
-                                        mail_response=str(e))
-    mailing.status = 'COMPLETED'
-    mailing.save()
+        if mailing.last_sent_date_time:
+            if mailing.last_sent_date_time < current_datetime:
+                mailing.mailing_status = 'завершена'
+                mailing.save()
+        if mailing.status == 'запущена':
+            if mailing.first_sent_date_time == current_datetime or mailing.last_sent_date_time == current_datetime:
+                send_mailing(mailing, current_datetime)
+        elif mailing.status == 'создана':
+            mailing.status = 'запущена'
+            send_mailing(mailing, current_datetime)
+        mailing.save()
