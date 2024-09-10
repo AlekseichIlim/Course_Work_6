@@ -39,7 +39,6 @@ def start_send_mailing():
 
     zone = pytz.timezone(settings.TIME_ZONE)
     current_datetime = datetime.now(zone)
-    print(f'Текущее время: {current_datetime}')
     # создание объекта с применением фильтра
     mailings = Dispatch.objects.filter(last_sent_date_time__gt=current_datetime)
 

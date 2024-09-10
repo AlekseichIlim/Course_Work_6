@@ -9,3 +9,10 @@ class Command(BaseCommand):
         scheduler = BlockingScheduler(timezone=settings.TIME_ZONE)
         scheduler.add_job(start_send_mailing, 'interval', seconds=60)
         scheduler.start()
+
+
+def start_scheduler():
+    scheduler = BlockingScheduler(timezone=settings.TIME_ZONE)
+    scheduler.add_job(start_send_mailing, 'interval', seconds=60)
+    scheduler.start()
+    print("Scheduler started")
