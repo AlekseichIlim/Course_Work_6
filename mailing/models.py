@@ -82,6 +82,9 @@ class Dispatch(models.Model):
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
         ordering = ('title', 'first_sent_date_time', 'status',)
+        permissions = [
+            ('can_edit_status', 'Can edit status'),
+        ]
 
 
 class Attempts(models.Model):
