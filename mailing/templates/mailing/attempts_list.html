@@ -1,0 +1,49 @@
+{% extends 'mailing/base.html' %}
+
+{% block content %}
+<main>
+
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Проведенные рассылки</h1>
+            </div>
+        </div>
+    </section>
+
+
+    <div class="album py-5 bg-body-tertiary">
+        <div class="container">
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {% for attempt in object_list %}
+                <div class="col-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">Рассылка {{ attempt.dispatch }}</h4>
+                            <h8 class="my-0 font-weight-normal">Результат рассылки:
+                                {% if attempt.status %}
+                                Успешно
+                                {% else %}
+                                Неуспешно
+                                {% endif %}
+                            </h8>
+                            <p class="my-0 font-weight-normal">Дата и время отправки рассылки: {{ attempt.datetime }}</p>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{ dispatch.message|slice:100 }}</p>
+                            <small class="text-body-secondary">{{ dispatch.status }}</small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <section class="py-5 text-center container">
+        <a class="btn btn-primary" href="{% url 'mailing:dispatch_list'%}" role="button">Назад</a>
+    </section>
+
+
+</main>
+{% endblock %}
