@@ -26,8 +26,9 @@
                 <li>{{ object.message|slice:100 }}</li>
                 <li>{{ object.status }}</li>
             </ul>
-            <a class="btn btn-primary" href="">Запустить</a>
+            {% if user == dispatch.owner %}
             <a class="btn btn-primary" href="{% url 'mailing:dispatch_update' dispatch.pk %}" role="button">Редактировать</a>
+            {% endif %}
             <a class="btn btn-primary" href="{% url 'mailing:dispatch_list'%}" role="button">Назад</a>
         </div>
     </div>
