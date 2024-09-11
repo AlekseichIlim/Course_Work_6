@@ -1,0 +1,26 @@
+{% extends 'mailing/base.html' %}
+{% block content %}
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        <div class="col-12">
+            <div class="row">
+                <!--enctype="multipart/form-data" необходимо прописывать чтобы была возможность загружать не только текст но и файлы>-->
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-body">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-primary">
+                                Войти
+                            </button>
+                            <a type="submit" class="btn btn-primary" href="" >
+                                Восстановить пароль
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
