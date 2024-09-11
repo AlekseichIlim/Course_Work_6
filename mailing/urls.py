@@ -12,5 +12,4 @@ urlpatterns = [
     path('dispatch/<int:pk>/', DispatchDetailView.as_view(), name='dispatch_detail'),
     path('dispatch/edit/<int:pk>/', DispatchUpdateView.as_view(), name='dispatch_update'),
     path('dispatch/delete/<int:pk>/', DispatchDeleteView.as_view(), name='dispatch_delete'),
-
 ]
