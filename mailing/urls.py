@@ -11,8 +11,8 @@ from mailing.views import DispatchListView, DispatchCreateView, DispatchDetailVi
 app_name = MailingConfig.name
 
 urlpatterns = [
-    path('home/', index, name='home'),
-    path('', DispatchListView.as_view(), name='dispatch_list'),
+    path('', index, name='home'),
+    path('dispatch/', DispatchListView.as_view(), name='dispatch_list'),
     path('dispatch/attempts/', cache_page(60)(AttemptsListView.as_view()), name='attempts_list'),
     path('dispatch/create/', DispatchCreateView.as_view(), name='dispatch_create'),
     path('dispatch/<int:pk>/', DispatchDetailView.as_view(), name='dispatch_detail'),
