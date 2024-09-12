@@ -43,14 +43,17 @@ def start_send_mailing():
     mailings = Dispatch.objects.filter(last_sent_date_time__gt=current_datetime)
 
     for mailing in mailings:
-        if mailing.last_sent_date_time:
-            if mailing.last_sent_date_time > current_datetime:
-                mailing.mailing_status = 'завершена'
-                mailing.save()
-        if mailing.status == 'запущена':
-            if mailing.first_sent_date_time == current_datetime or mailing.last_sent_date_time == current_datetime:
+        if mailing.is_activ:
+            if mailing.last_sent_date_time:
+                if mailing.last_sent_date_time > current_datetime:
+                    mailing.mailing_status = 'завершена'
+                    mailing.save()
+            if mailing.status == 'запущена':
+                if mailing.first_sent_date_time == current_datetime or mailing.last_sent_date_time == current_datetime:
+                    send_mailing(mailing, current_datetime)
+            elif mailing.status == 'создана':
+                mailing.status = 'запущена'
                 send_mailing(mailing, current_datetime)
-        elif mailing.status == 'создана':
-            mailing.status = 'запущена'
-            send_mailing(mailing, current_datetime)
-        mailing.save()
+            mailing.save()
+        else:
+            continue

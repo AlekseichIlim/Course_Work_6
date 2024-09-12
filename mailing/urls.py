@@ -3,12 +3,14 @@ from django.urls import path
 from mailing.apps import MailingConfig
 from mailing.views import DispatchListView, DispatchCreateView, DispatchDetailView, DispatchUpdateView, \
     DispatchDeleteView, AttemptsListView, ClientListView, MessageListView, ClientDetailView, ClientUpdateView, \
-    ClientCreateView, ClientDeleteView, MessageCreateView, MessageDetailView, MessageUpdateView, MessageDeleteView
+    ClientCreateView, ClientDeleteView, MessageCreateView, MessageDetailView, MessageUpdateView, MessageDeleteView, \
+    index
 
 app_name = MailingConfig.name
 
 urlpatterns = [
-    path('', DispatchListView.as_view(), name='dispatch_list'),
+    path('', index, name='home'),
+    path('dispatches/', DispatchListView.as_view(), name='dispatch_list'),
     path('dispatch/attempts/', AttemptsListView.as_view(), name='attempts_list'),
     path('dispatch/create/', DispatchCreateView.as_view(), name='dispatch_create'),
     path('dispatch/<int:pk>/', DispatchDetailView.as_view(), name='dispatch_detail'),

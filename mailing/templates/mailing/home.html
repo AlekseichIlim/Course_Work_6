@@ -1,0 +1,58 @@
+{% extends 'mailing/base.html' %}
+
+{% block content %}
+<main>
+
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Главная страница сервиса</h1>
+                {% if user.is_authenticated %}
+                <p>
+                    <a class="btn btn-primary my-2" href="{% url 'mailing:dispatch_list' %}">Рассылки</a>
+                    <a class="btn btn-primary my-2" href="{% url 'mailing:message_list' %}">Сообщения</a>
+                    <a class="btn btn-primary my-2" href="{% url 'mailing:client_list' %}">Клиенты</a>
+                    <a class="btn btn-primary my-2" href="{% url 'blog:blog_list' %}">Блог</a>
+                </p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <ul class="list-group">
+  <li class="list-group-item">Всего рассылок: {{count_mailing_all}}</li>
+  <li class="list-group-item">Активных рассылок: {{count_mailing}}</li>
+  <li class="list-group-item">Всего клиентов: {{count_clientst}}</li>
+</ul>
+    <div class="album py-5 bg-body-tertiary">
+        <div class="container">
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {% for blog in blog_list %}
+                <div class="col-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">{{ blog.title }}</h4>
+                            <h8 class="my-0 font-weight-normal">Периодичность: {{ dispatch.periodicity }}</h8>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{ blog.content|slice:100 }}</p>
+                            <small class="text-body-secondary">Количество просмотров: {{ blog.views_count }}</small>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a class="btn btn-primary" href="{% url 'blog:blog_detail' blog.pk %}"
+                   role="button">Посмотреть</a>
+                                    {% if user == blog.owner %}
+                                    <a class="btn btn-success" href="{% url 'blog:blog_update' blog.pk %}"
+                   role="button">Редактировать</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
