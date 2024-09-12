@@ -25,7 +25,6 @@
                     <div class="card mb-4 box-shadow">
                         <div class="card-header">
                             <h4 class="my-0 font-weight-normal">{{ blog.title }}</h4>
-                            <h8 class="my-0 font-weight-normal">Периодичность: {{ dispatch.periodicity }}</h8>
                         </div>
                         <div class="card-body">
                             <p class="card-text">{{ blog.content|slice:100 }}</p>
@@ -37,8 +36,6 @@
                                     {% if user == blog.owner %}
                                     <a class="btn btn-success" href="{% url 'blog:blog_update' blog.pk %}"
                    role="button">Редактировать</a>
-                                    <a class="btn btn-danger" href="{% url 'blog:blog_delete' blog.pk %}"
-                   role="button">Удалить</a>
                                     {% endif %}
                                 </div>
                             </div>
