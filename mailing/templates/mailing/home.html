@@ -21,7 +21,7 @@
     <ul class="list-group">
   <li class="list-group-item">Всего рассылок: {{count_mailing_all}}</li>
   <li class="list-group-item">Активных рассылок: {{count_mailing}}</li>
-  <li class="list-group-item">Всего клиентов: {{count_clientst}}</li>
+  <li class="list-group-item">Всего клиентов: {{count_clients}}</li>
 </ul>
     <div class="album py-5 bg-body-tertiary">
         <div class="container">
@@ -32,7 +32,6 @@
                     <div class="card mb-4 box-shadow">
                         <div class="card-header">
                             <h4 class="my-0 font-weight-normal">{{ blog.title }}</h4>
-                            <h8 class="my-0 font-weight-normal">Периодичность: {{ dispatch.periodicity }}</h8>
                         </div>
                         <div class="card-body">
                             <p class="card-text">{{ blog.content|slice:100 }}</p>
@@ -41,10 +40,6 @@
                                 <div class="btn-group">
                                     <a class="btn btn-primary" href="{% url 'blog:blog_detail' blog.pk %}"
                    role="button">Посмотреть</a>
-                                    {% if user == blog.owner %}
-                                    <a class="btn btn-success" href="{% url 'blog:blog_update' blog.pk %}"
-                   role="button">Редактировать</a>
-                                    {% endif %}
                                 </div>
                             </div>
                         </div>
