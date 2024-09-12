@@ -1,29 +1,53 @@
 {% extends 'mailing/base.html' %}
+
 {% block content %}
-<div class="coll-12 mb-5">
-    <a class="btn btn-outline-primary" href="{% url 'blog:blog_create' %}">Добавить статью</a>
-</div>
-{% for object in object_list %}
-<div class="col">
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <p class="card-text">
-                {{object| title}}
-            </p>
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                    <a class="btn btn-primary" href="{% url 'blog:blog_detail' object.pk %}" role="button">Посмотреть</a>
-                    <a class="btn btn-outline-primary" href="{% url 'blog:blog_update' object.pk %}" role="button">Изменить</a>
-                    <a class="btn btn-outline-primary" href="{% url 'blog:blog_delete' object.pk %}" role="button">Удалить</a>
+<main>
+
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Блог</h1>
+                {% if user.is_authenticated %}
+                <p>
+                    <a class="btn btn-primary my-2" href="{% url 'blog:blog_create' %}">Создать статью</a>
+                </p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <div class="album py-5 bg-body-tertiary">
+        <div class="container">
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {% for blog in object_list %}
+                <div class="col-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">{{ blog.title }}</h4>
+                            <h8 class="my-0 font-weight-normal">Периодичность: {{ dispatch.periodicity }}</h8>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{ blog.content|slice:100 }}</p>
+                            <small class="text-body-secondary">Количество просмотров: {{ blog.views_count }}</small>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a class="btn btn-primary" href="{% url 'blog:blog_detail' blog.pk %}"
+                   role="button">Посмотреть</a>
+                                    {% if user == blog.owner %}
+                                    <a class="btn btn-success" href="{% url 'blog:blog_update' blog.pk %}"
+                   role="button">Редактировать</a>
+                                    <a class="btn btn-danger" href="{% url 'blog:blog_delete' blog.pk %}"
+                   role="button">Удалить</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                {% endfor %}
             </div>
         </div>
     </div>
-</div>
-
-{% endfor %}
+</main>
 {% endblock %}
-
-<!--href="{% url 'materials:view' object.pk %}"-->
-<!--href="{% url 'materials:edit' object.pk %}"-->
-<!--href="{% url 'materials:delete' object.pk %}"-->
