@@ -44,7 +44,7 @@ def start_send_mailing():
 
     for mailing in mailings:
         if mailing.last_sent_date_time:
-            if mailing.last_sent_date_time < current_datetime:
+            if mailing.last_sent_date_time > current_datetime:
                 mailing.mailing_status = 'завершена'
                 mailing.save()
         if mailing.status == 'запущена':
