@@ -1,6 +1,6 @@
 from django.forms import ModelForm, BooleanField
 
-from mailing.models import Dispatch
+from mailing.models import Dispatch, Client, Message
 
 
 class StyleMixin:
@@ -16,5 +16,16 @@ class StyleMixin:
 class DispatchForm(ModelForm):
     class Meta:
         model = Dispatch
-        exclude = ('next_sent_date_time', )
+        exclude = ('next_sent_date_time', 'owner', )
 
+
+class ClientForm(ModelForm):
+    class Meta:
+        model = Client
+        exclude = ('owner', )
+
+
+class MessageForm(ModelForm):
+    class Meta:
+        model = Message
+        exclude = ('owner', )
