@@ -7,9 +7,11 @@
           <h4>Меню</h4>
           <ul class="list-unstyled">
             <li><a href="{% url 'mailing:dispatch_list' %}" class="text-white">Главная</a></li>
-            <li><a href="{% url 'mailing:attempts_list' %}" class="text-white">Проведенные рассылки</a></li>
               {% if user.is_authenticated %}
-             <li><a href="{% url 'users:logout' %}" class="text-white">Выйти</a></li>
+              <li><a href="{% url 'mailing:attempts_list' %}" class="text-white">Проведенные рассылки</a></li>
+              <li><a href="{% url 'mailing:message_list' %}" class="text-white">Сообщения</a></li>
+              <li><a href="{% url 'mailing:client_list' %}" class="text-white">Клиенты</a></li>
+              <li><a href="{% url 'users:logout' %}" class="text-white">Выйти</a></li>
               {% else %}
               <li><a href="{% url 'users:login' %}" class="text-white">Войти</a></li>
               <li><a href="{% url 'users:register' %}" class="text-white">Регистрация</a></li>
