@@ -1,0 +1,23 @@
+{% extends 'mailing/base.html' %}
+{% load my_tags %}
+
+{% block content %}
+<div class="col-4">
+    <div class="card mb-4 box-shadow">
+        <div class="card-header">
+            <h6 class="my-0 font-weight-normal">Имя: {{ object.name }} {{ object.surname }}</h6>
+            <h5 class="my-0 font-weight-normal">Почта: {{ object.email }} </h5>
+        </div>
+
+        <div class="card-body">
+
+            <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                <li>Коментарий: {{object.comments}}</li>
+            </ul>
+            <a class="btn btn-primary" href="{% url 'mailing:client_update' client.pk %}" role="button">Редактировать</a>
+            <a class="btn btn-danger" href="{% url 'mailing:client_delete' client.pk %}" role="button">Удалить</a>
+        </div>
+        <a class="btn btn-primary" href="{% url 'mailing:client_list'%}" role="button">Назад</a>
+    </div>
+</div>
+{% endblock %}
