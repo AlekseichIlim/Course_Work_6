@@ -2,7 +2,7 @@ import random
 from urllib import request
 
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.urls import reverse_lazy, reverse
@@ -189,10 +189,7 @@ class MessageDeleteView(DeleteView, LoginRequiredMixin):
     success_url = reverse_lazy('mailing:message_list')
 
 
-@login_required
-# @permission_required('main.view_student')
 def index(request):
-    dispatch_list = Dispatch.objects.all()
     count_mailin_all = len(Dispatch.objects.all())
     count_mailin_activ = len(Dispatch.objects.filter(is_activ=True))
     count_client_list = len(Client.objects.all())
@@ -202,13 +199,11 @@ def index(request):
         rand_blog = random.sample(blog_list, 3)
     else:
         rand_blog = blog_list
-
     context = {
         'count_mailing_all': count_mailin_all,
         'count_mailing': count_mailin_activ,
-        'count_clientst': count_client_list,
+        'count_clients': count_client_list,
         'blog_list': rand_blog
     }
-
-    return render(request, 'mailing/home.html', context)
+    return render(request, "mailing/home.html", context)
 
