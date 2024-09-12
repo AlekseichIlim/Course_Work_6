@@ -75,6 +75,7 @@ class Dispatch(models.Model):
     status = models.CharField(default=CREATED, max_length=20, choices=STATUS_CHOICES, verbose_name='статус')
     message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name='сообщение', related_name='dispatch')
     clients = models.ManyToManyField(Client, verbose_name='клиенты', related_name='dispatch')
+    is_activ = models.BooleanField(default=True, verbose_name='учится')
     owner = models.ForeignKey(User, verbose_name='Создатель', on_delete=models.SET_NULL, **NULLABLE)
 
     def __str__(self):
@@ -86,6 +87,7 @@ class Dispatch(models.Model):
         ordering = ('title', 'first_sent_date_time', 'status',)
         permissions = [
             ('can_edit_status', 'Can edit status'),
+            ('can_edit_is_activ', 'Can edit is activ')
         ]
 
 
